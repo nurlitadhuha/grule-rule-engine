@@ -177,17 +177,17 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 				}
 
 				if dataCtx.IsComplete() {
-					break
+					log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
+					return nil
 				}
 			} else {
 				// No more rule can be executed, so we are done here.
 				log.Debugf("No more rule to run")
-				break
+				log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
+				return nil
 			}
 		}
 	}
-	log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
-	return nil
 }
 
 // FetchMatchingRules function is responsible to fetch all the rules that matches to a fact against all rule entries
