@@ -122,7 +122,7 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 			g.notifyBeginCycle(cycle + 1)
 
 			// Select all rule entry that can be executed.
-			log.Tracef("Select all rule entry that can be executed.")
+			log.Infof("Select all rule entry that can be executed.")
 			runnable := make([]*ast.RuleEntry, 0)
 			for _, v := range knowledge.RuleEntries {
 				if !v.Retracted {
@@ -143,7 +143,7 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 
 			// disabled to test the rete's variable change detection.
 			// knowledge.RuleContextReset()
-			log.Tracef("Selected rules %d.", len(runnable))
+			log.Infof("Selected rules %d.", len(runnable))
 
 			// If there are rules to execute, sort them by their Salience
 			log.Infof("~~~ len runnable %d", len(runnable))
@@ -151,7 +151,7 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 				// add the cycle counter
 				cycle++
 
-				log.Debugf("~~~ Cycle #%d", cycle)
+				log.Infof("~~~ Cycle #%d", cycle)
 				// if cycle is above the maximum allowed cycle, returnan error indicated the cycle has ended.
 				if cycle > g.MaxCycle {
 					log.Error("Max cycle reached")
@@ -178,13 +178,13 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 				}
 
 				if dataCtx.IsComplete() {
-					log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
+					log.Infof("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
 					return nil
 				}
 			} else {
 				// No more rule can be executed, so we are done here.
-				log.Debugf("No more rule to run")
-				log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
+				log.Infof("No more rule to run")
+				log.Infof("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)
 				return nil
 			}
 		}
