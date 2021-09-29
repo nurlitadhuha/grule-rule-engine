@@ -15,13 +15,14 @@
 package ast
 
 import (
-	"github.com/hyperjumptech/grule-rule-engine/logger"
 	"math"
 	"reflect"
 	"strings"
 	"time"
 
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
+	"github.com/nurlitadhuha/grule-rule-engine/logger"
+
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 	"github.com/sirupsen/logrus"
 )
 

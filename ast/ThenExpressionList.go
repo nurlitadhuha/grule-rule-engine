@@ -16,8 +16,9 @@ package ast
 
 import (
 	"bytes"
-	"github.com/hyperjumptech/grule-rule-engine/ast/unique"
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
+
+	"github.com/nurlitadhuha/grule-rule-engine/ast/unique"
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // NewThenExpressionList creates new instance of ThenExpressionList

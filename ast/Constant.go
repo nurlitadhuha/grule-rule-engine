@@ -18,11 +18,12 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/ast/unique"
 	"math"
 	"reflect"
 
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
+	"github.com/nurlitadhuha/grule-rule-engine/ast/unique"
+
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // NewConstant will create new instance of Constant

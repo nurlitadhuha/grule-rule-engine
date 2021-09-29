@@ -17,10 +17,11 @@ package engine
 import (
 	"context"
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/ast"
-	"github.com/hyperjumptech/grule-rule-engine/logger"
 	"sort"
 	"time"
+
+	"github.com/nurlitadhuha/grule-rule-engine/ast"
+	"github.com/nurlitadhuha/grule-rule-engine/logger"
 
 	"github.com/sirupsen/logrus"
 )
@@ -111,75 +112,78 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 		data context which makes rules to get executed again and again.
 	*/
 	for {
-		if ctx.Err() != nil {
-			log.Error("Context canceled")
-			return ctx.Err()
-		}
-
-		g.notifyBeginCycle(cycle + 1)
-
-		// Select all rule entry that can be executed.
-		log.Tracef("Select all rule entry that can be executed.")
-		runnable := make([]*ast.RuleEntry, 0)
-		for _, v := range knowledge.RuleEntries {
-			if !v.Retracted {
-				// test if this rule entry v can execute.
-				can, err := v.Evaluate(dataCtx, knowledge.WorkingMemory)
-				if err != nil {
-					log.Errorf("Failed testing condition for rule : %s. Got error %v", v.RuleName, err)
-					// No longer return error, since unavailability of variable or fact in context might be intentional.
-				}
-				// if can, add into runnable array
-				if can {
-					runnable = append(runnable, v)
-				}
-				// notify all listeners that a rule's when scope is been evaluated.
-				g.notifyEvaluateRuleEntry(cycle+1, v, can)
-			}
-		}
-
-		// disabled to test the rete's variable change detection.
-		// knowledge.RuleContextReset()
-		log.Tracef("Selected rules %d.", len(runnable))
-
-		// If there are rules to execute, sort them by their Salience
-		if len(runnable) > 0 {
-			// add the cycle counter
-			cycle++
-
-			log.Debugf("Cycle #%d", cycle)
-			// if cycle is above the maximum allowed cycle, returnan error indicated the cycle has ended.
-			if cycle > g.MaxCycle {
-				log.Error("Max cycle reached")
-				return fmt.Errorf("the GruleEngine successfully selected rule candidate for execution after %d cycles, this could possibly caused by rule entry(s) that keep added into execution pool but when executed it does not change any data in context. Please evaluate your rule entries \"When\" and \"Then\" scope. You can adjust the maximum cycle using GruleEngine.MaxCycle variable", g.MaxCycle)
+		select {
+		case <-time.After(1 * time.Millisecond):
+			if ctx.Err() != nil {
+				log.Error("Context canceled")
+				return ctx.Err()
 			}
 
-			runner := runnable[0]
+			g.notifyBeginCycle(cycle + 1)
 
-			// scan all runnables and pick the highest salience
-			if len(runnable) > 1 {
-				for idx, pr := range runnable {
-					if idx > 0 && runner.Salience < pr.Salience {
-						runner = pr
+			// Select all rule entry that can be executed.
+			log.Tracef("Select all rule entry that can be executed.")
+			runnable := make([]*ast.RuleEntry, 0)
+			for _, v := range knowledge.RuleEntries {
+				if !v.Retracted {
+					// test if this rule entry v can execute.
+					can, err := v.Evaluate(dataCtx, knowledge.WorkingMemory)
+					if err != nil {
+						log.Errorf("Failed testing condition for rule : %s. Got error %v", v.RuleName, err)
+						// No longer return error, since unavailability of variable or fact in context might be intentional.
+					}
+					// if can, add into runnable array
+					if can {
+						runnable = append(runnable, v)
+					}
+					// notify all listeners that a rule's when scope is been evaluated.
+					g.notifyEvaluateRuleEntry(cycle+1, v, can)
+				}
+			}
+
+			// disabled to test the rete's variable change detection.
+			// knowledge.RuleContextReset()
+			log.Tracef("Selected rules %d.", len(runnable))
+
+			// If there are rules to execute, sort them by their Salience
+			if len(runnable) > 0 {
+				// add the cycle counter
+				cycle++
+
+				log.Debugf("Cycle #%d", cycle)
+				// if cycle is above the maximum allowed cycle, returnan error indicated the cycle has ended.
+				if cycle > g.MaxCycle {
+					log.Error("Max cycle reached")
+					return fmt.Errorf("the GruleEngine successfully selected rule candidate for execution after %d cycles, this could possibly caused by rule entry(s) that keep added into execution pool but when executed it does not change any data in context. Please evaluate your rule entries \"When\" and \"Then\" scope. You can adjust the maximum cycle using GruleEngine.MaxCycle variable", g.MaxCycle)
+				}
+
+				runner := runnable[0]
+
+				// scan all runnables and pick the highest salience
+				if len(runnable) > 1 {
+					for idx, pr := range runnable {
+						if idx > 0 && runner.Salience < pr.Salience {
+							runner = pr
+						}
 					}
 				}
-			}
-			// notify listeners that we are about to execute a rule entry then scope
-			g.notifyExecuteRuleEntry(cycle, runner)
-			// execute the top most prioritized rule
-			err := runner.Execute(dataCtx, knowledge.WorkingMemory)
-			if err != nil {
-				log.Errorf("Failed execution rule : %s. Got error %v", runner.RuleName, err)
-				return err
-			}
+				// notify listeners that we are about to execute a rule entry then scope
+				g.notifyExecuteRuleEntry(cycle, runner)
+				// execute the top most prioritized rule
+				err := runner.Execute(dataCtx, knowledge.WorkingMemory)
+				if err != nil {
+					log.Errorf("Failed execution rule : %s. Got error %v", runner.RuleName, err)
+					return err
+				}
 
-			if dataCtx.IsComplete() {
+				if dataCtx.IsComplete() {
+					break
+				}
+			} else {
+				// No more rule can be executed, so we are done here.
+				log.Debugf("No more rule to run")
 				break
 			}
-		} else {
-			// No more rule can be executed, so we are done here.
-			log.Debugf("No more rule to run")
-			break
 		}
 	}
 	log.Debugf("Finished Rules execution. With knowledge base '%s' version %s. Total #%d cycles. Duration %d ms.", knowledge.Name, knowledge.Version, cycle, time.Now().Sub(startTime).Nanoseconds()/1e6)

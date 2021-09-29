@@ -15,7 +15,7 @@
 package ast
 
 import (
-	"github.com/hyperjumptech/grule-rule-engine/logger"
+	"github.com/nurlitadhuha/grule-rule-engine/logger"
 	"github.com/sirupsen/logrus"
 )
 

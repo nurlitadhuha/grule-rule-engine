@@ -18,11 +18,12 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/ast/unique"
-	"github.com/sirupsen/logrus"
 	"io"
 	"math"
 	"reflect"
+
+	"github.com/nurlitadhuha/grule-rule-engine/ast/unique"
+	"github.com/sirupsen/logrus"
 )
 
 // NodeType is to label a Meta information within catalog

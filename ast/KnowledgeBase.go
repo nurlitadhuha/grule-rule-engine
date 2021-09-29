@@ -17,13 +17,14 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"io"
 	"sort"
 	"strings"
 	"sync"
 
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
+	"github.com/sirupsen/logrus"
+
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // NewKnowledgeLibrary create a new instance KnowledgeLibrary
@@ -64,7 +65,7 @@ func (lib *KnowledgeLibrary) LoadKnowledgeBaseFromReader(reader io.Reader, overw
 	defer func() {
 		if r := recover(); r != nil {
 			retKb = nil
-			logrus.Panicf("panic recovered during LoadKnowledgeBaseFromReader. send us your report to https://github.com/hyperjumptech/grule-rule-engine/issues")
+			logrus.Panicf("panic recovered during LoadKnowledgeBaseFromReader. send us your report to https://github.com/nurlitadhuha/grule-rule-engine/issues")
 		}
 	}()
 

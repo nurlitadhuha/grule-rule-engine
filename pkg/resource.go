@@ -16,11 +16,12 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/logger"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+
+	"github.com/nurlitadhuha/grule-rule-engine/logger"
 
 	"github.com/bmatcuk/doublestar"
 	"gopkg.in/src-d/go-billy.v4"

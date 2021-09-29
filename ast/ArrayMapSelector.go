@@ -17,9 +17,10 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/ast/unique"
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
 	"reflect"
+
+	"github.com/nurlitadhuha/grule-rule-engine/ast/unique"
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // NewArrayMapSelector create a new array selector graph

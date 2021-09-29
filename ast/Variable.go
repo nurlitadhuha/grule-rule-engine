@@ -17,11 +17,12 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/ast/unique"
-	"github.com/hyperjumptech/grule-rule-engine/model"
 	"reflect"
 
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
+	"github.com/nurlitadhuha/grule-rule-engine/ast/unique"
+	"github.com/nurlitadhuha/grule-rule-engine/model"
+
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // NewVariable create new instance of Variable

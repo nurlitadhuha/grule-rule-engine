@@ -16,9 +16,10 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/logger"
 	"math"
 	"reflect"
+
+	"github.com/nurlitadhuha/grule-rule-engine/logger"
 )
 
 // GetFunctionList get list of functions in a struct instance

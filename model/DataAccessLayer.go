@@ -16,9 +16,10 @@ package model
 
 import (
 	"fmt"
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
 	"reflect"
 	"strings"
+
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 )
 
 // ValueNode is an abstraction layer to access underlying dom style data.
