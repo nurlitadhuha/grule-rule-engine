@@ -21,7 +21,7 @@ import (
 	"testing"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	parser "github.com/grule-rule-engine/antlr/parser/grulev3"
+	parser "github.com/nurlitadhuha/grule-rule-engine/antlr/parser/grulev3"
 	"github.com/nurlitadhuha/grule-rule-engine/ast"
 	"github.com/nurlitadhuha/grule-rule-engine/pkg"
 	"github.com/stretchr/testify/assert"
