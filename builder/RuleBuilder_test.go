@@ -15,10 +15,11 @@
 package builder
 
 import (
-	"github.com/hyperjumptech/grule-rule-engine/ast"
-	"github.com/hyperjumptech/grule-rule-engine/pkg"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/nurlitadhuha/grule-rule-engine/ast"
+	"github.com/nurlitadhuha/grule-rule-engine/pkg"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNoPanic(t *testing.T) {
