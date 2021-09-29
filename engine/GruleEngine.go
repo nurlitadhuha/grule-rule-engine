@@ -113,7 +113,7 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 	*/
 	for {
 		select {
-		case <-time.After(1 * time.Millisecond):
+		case <-time.After(20 * time.Millisecond):
 			if ctx.Err() != nil {
 				log.Error("Context canceled")
 				return ctx.Err()
