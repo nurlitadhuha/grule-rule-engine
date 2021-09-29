@@ -146,11 +146,12 @@ func (g *GruleEngine) ExecuteWithContext(ctx context.Context, dataCtx ast.IDataC
 			log.Tracef("Selected rules %d.", len(runnable))
 
 			// If there are rules to execute, sort them by their Salience
+			log.Infof("~~~ len runnable %d", len(runnable))
 			if len(runnable) > 0 {
 				// add the cycle counter
 				cycle++
 
-				log.Debugf("Cycle #%d", cycle)
+				log.Debugf("~~~ Cycle #%d", cycle)
 				// if cycle is above the maximum allowed cycle, returnan error indicated the cycle has ended.
 				if cycle > g.MaxCycle {
 					log.Error("Max cycle reached")
